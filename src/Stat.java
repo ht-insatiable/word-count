@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 public class Stat {
 	
@@ -33,7 +34,26 @@ public class Stat {
 		return lines;
 	}
 	
-	public int countWords() throws IOException
+	public int[] countDifferentLines() throws IOException
+	{
+		int[] lines=new int[3];
+		File file=new File(filepath);
+		BufferedReader br=new BufferedReader(new FileReader(file));
+		while(br.readLine()!=null)
+			;
+		br.close();
+		return lines;
+	}
+	
+	private boolean beingStopped(String word,ArrayList<String> sl)
+	{
+		for(int i=0;i<sl.size();i++)
+			if(word.equals(sl.get(i)))
+				return true;
+		return false;
+	}
+	
+	public int countWords(ArrayList<String> sl) throws IOException
 	{
 		int words=0;
 		File file=new File(filepath);
@@ -49,15 +69,20 @@ public class Stat {
 			char ch=content.charAt(i);
 			if(ch==' '||ch==','||ch=='£¬'||ch=='\t') {
 				if(inWord) {
+					if(!sl.isEmpty()) 
+					{
+						if(!beingStopped(word,sl))
+							words++;
+					}
+					else
+						words++;
 					word="";
 					inWord=false;
 				}
 			}
 			else {
-				if(!inWord) {
-					words++;
+				if(!inWord)
 					inWord=true;
-				}
 				word+=ch;
 			}
 		}
