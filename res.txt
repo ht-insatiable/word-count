@@ -1,3 +1,0 @@
-test.txt,字符数：50
-test.txt,单词数：12
-test.txt,行数：3

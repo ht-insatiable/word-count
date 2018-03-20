@@ -30,8 +30,8 @@ public class Counter {
 	
 	private void parse(String[] args)
 	{
-		if(args.length==0)
-			System.out.println("缺少必要参数");
+//		if(args.length==0)
+//			System.out.println("缺少必要参数");
 		String lastCommand=null;
 		for (int i = 0; i < args.length; ++i) 
 		{
@@ -66,7 +66,7 @@ public class Counter {
 			{
 				switch (lastCommand)
 				{
-				case "-c":case "-w":case "-l":
+				case "-c":case "-w":case "-l":case "-a":
 					ipfiles.add(args[i]);
 					break;
 				case "-o":
@@ -78,8 +78,30 @@ public class Counter {
 		}
 		if(commands[5])
 		{
-			pattern=ipfiles.get(0);
-			ipfiles.clear();
+			String ipfpath=ipfiles.get(0);
+			int i;
+			pattern="";
+			for(i=ipfpath.length()-1;i>=0;i--)
+				if(ipfpath.charAt(i)=='\\') 
+					break;
+			if(i==-1)	//the input * auto-completed by cmd,pattern lost
+				commands[5]=false;	//simply don't take it as a dir
+			else //Separate dir from raw pattern,and turn raw pattern into valid re
+			{
+				String rawPattern=ipfpath.substring(i+1, ipfpath.length());
+				for(int j=0;j<rawPattern.length();j++)
+				{
+					char ch=rawPattern.charAt(j);
+					if(ch=='*')
+						pattern+=".*";
+					else if(ch=='.')
+						pattern+="\\.";
+					else
+						pattern+=ch;
+				}
+				dir=ipfpath.substring(0,i);
+				ipfiles.clear();
+			}
 		}
 	}
 	
@@ -126,13 +148,13 @@ public class Counter {
 			String s[] = f1.list();
 			for (int i = 0; i < s.length; i++)
 			{
-				File f = new File(dir + "/" + s[i]);
+				File f = new File(dir + "\\" + s[i]);
 				if (f.isDirectory())
-					parseDir(dir + "/" + s[i]);
-				else if (Pattern.matches(pattern, dir + "/" + s[i])) 
+					parseDir(dir + "\\" + s[i]);
+				else if (Pattern.matches(pattern, dir + "\\" + s[i])) 
 				{
-					System.out.println( dir+"/"+s[i]);
-					ipfiles.add(dir + "/" + s[i]);
+					//System.out.println( dir+"\\"+s[i]);
+					ipfiles.add(dir + "\\" + s[i]);
 				}
 			}
 		}
@@ -144,15 +166,15 @@ public class Counter {
 		FileOutputStream fop = new FileOutputStream(f,true);
 		OutputStreamWriter writer = new OutputStreamWriter(fop, "UTF-8");
 		if (commands[0])
-			writer.append(fstat.filepath + "," + "字符数：" + fstat.countChars() + "\r\n");
+			writer.append(fstat.filepath + "," + " 字符数：" + fstat.countChars() + "\r\n");
 		if (commands[1])
-			writer.append(fstat.filepath + "," + "单词数：" + fstat.countWords(sl) + "\r\n");
+			writer.append(fstat.filepath + "," + " 单词数：" + fstat.countWords(sl) + "\r\n");
 		if (commands[2])
-			writer.append(fstat.filepath + "," + "行数：" + fstat.countLines() + "\r\n");
+			writer.append(fstat.filepath + "," + " 行数：" + fstat.countLines() + "\r\n");
 		if (commands[4])
 		{
 			int lines[]=fstat.countDifferentLines();
-			writer.append(fstat.filepath+","+"代码行/空行/注释行："+lines[0]+"/"+lines[1]+"/"+lines[2]+"\r\n");
+			writer.append(fstat.filepath+","+" 代码行/空行/注释行："+lines[0]+"/"+lines[1]+"/"+lines[2]+"\r\n");
 		}
 		writer.close();
 		fop.close();

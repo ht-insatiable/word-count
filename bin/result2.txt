@@ -1,0 +1,12 @@
+testcases\stoplist.txt, 单词数：2
+testcases\stoplist.txt, 代码行/空行/注释行：1/0/0
+testcases\test1.txt, 单词数：1
+testcases\test1.txt, 代码行/空行/注释行：1/0/0
+testcases\test2.txt, 单词数：3
+testcases\test2.txt, 代码行/空行/注释行：3/1/0
+testcases\test3.txt, 单词数：2
+testcases\test3.txt, 代码行/空行/注释行：1/0/0
+testcases\test5\1.txt, 单词数：2
+testcases\test5\1.txt, 代码行/空行/注释行：2/0/0
+testcases\test5\2.txt, 单词数：2
+testcases\test5\2.txt, 代码行/空行/注释行：1/0/0

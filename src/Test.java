@@ -7,7 +7,6 @@ public class Test {
 		for(int i=0;i<ctr.ipfiles.size();i++)
 		{
 			Stat fstat=new Stat(ctr.ipfiles.get(i));
-			System.out.println("precessing "+ctr.ipfiles.get(i));
 			ctr.write(fstat);
 		}
 	}
